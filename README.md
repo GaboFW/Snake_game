@@ -11,3 +11,9 @@ Es el tipico juego que estaba en los celulares antiguos, solo con unas mejoras u
 
 ![Manzana](Manzanita.png)
 
+### Requisitos
+Tener instalado Pygame en PYTHON
+
+![pygame](Install.png)
+
+Tener los archivos **colores** y **serpiente** en la misma carpeta que el **Snake_Game**

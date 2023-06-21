@@ -156,6 +156,7 @@ def juego():
 
     pygame.quit()
 
+    # Guardar puntaje en un SQL
     conexion = sqlite3.connect("Puntajes.db")
 
     conexion.execute("insert into Ranking(jugador, inicio, final, puntos) values (?,?,?,?)", (nombre, inicio, fin, puntos))
