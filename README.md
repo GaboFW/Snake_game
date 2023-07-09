@@ -7,7 +7,7 @@ Es el tipico juego que estaba en los celulares antiguos, solo con unas mejoras u
 ## Imagen
 ![Juego](Juego.png)
 
-![Serpiente](Cuerpo.png)
+![Serpiente](Cabeza.png)
 
 ![Manzana](Manzanita.png)
 
