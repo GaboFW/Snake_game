@@ -1,9 +1,9 @@
 import pygame
 import random
-import colores
+import Python.colores as colores
 import sqlite3
 import datetime
-from serpiente import *
+from Python.serpiente import *
 
 inicio = datetime.datetime.now()
 

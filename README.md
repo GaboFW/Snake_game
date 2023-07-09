@@ -19,4 +19,4 @@ Tener instalado Pygame en PYTHON
 Tener los archivos **colores** y **serpiente** en la misma carpeta que el **Snake_Game**
 
 ### Postdata
-El archivo **creando_sql**  crea una tabla para la puntuacion, no es necesario usarla porque ya esta creada.
+El archivo **base_de_datos** crea una tabla para la puntuacion, no es necesario usarla porque ya esta creada.
