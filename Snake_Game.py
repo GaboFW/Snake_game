@@ -1,11 +1,10 @@
 import pygame
 import random
-import Python.colores as colores
+import colores
 import sqlite3
-import datetime
-from Python.serpiente import *
-
-inicio = datetime.datetime.now()
+from serpiente import *
+import pygame.font
+from base_de_datos import *
 
 pygame.init()
 pygame.mixer.init()
@@ -35,6 +34,10 @@ pygame.display.set_caption("Snake Game")
 fondo = pygame.image.load("SNAKE\Fondo.png")
 fondo = pygame.transform.scale(fondo, (800, 600))
 
+# Imagen inicio
+pantalla_inicio = pygame.image.load("SNAKE\Pantalla de inicio.png")
+pantalla_inicio = pygame.transform.scale(pantalla_inicio, (800, 600))
+
 # Llamar a la clase
 serpiente = Serpiente()
 
@@ -62,6 +65,17 @@ def generar_comida():
     y = random.randint(0, celdas_y - 1) * 20
     return (x, y)
 
+# Mostrar el Ranking
+def mostrar_ranking(conexion):
+    cursor = conexion.execute("SELECT jugador, puntos FROM Ranking ORDER BY puntos DESC LIMIT 5")
+    pos = 300
+    for fila in cursor:
+        nombre, puntos = fila
+        fuente = pygame.font.Font(None, 35)
+        datos = fuente.render(f"{nombre}: {puntos}", True, colores.negro)
+        pantalla.blit(datos, (ANCHO / 2 - datos.get_width() / 2, pos))
+        pos += 40
+
 # El juego
 def juego():
     movimiento = 1.0
@@ -72,7 +86,24 @@ def juego():
 
     comida = generar_comida()
 
-    nombre = input("Escribi tu nombre: ")
+    pantalla.blit(pantalla_inicio, (0, 0))
+    pygame.display.flip()
+
+    nombre = ""
+    nombre_ingresado = False
+
+    while not nombre_ingresado:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if len(nombre) < 3:
+                    letra = pygame.key.name(event.key)
+                    nombre += letra
+                    nombre_ranking = pygame.font.Font(None, 35)
+                    texto = nombre_ranking.render("Escriba su nombre: " + "".join(nombre), True, colores.negro)
+                    pantalla.blit(texto, (10, 500))
+                else:
+                    nombre_ingresado = True
+        pygame.display.flip()
 
     game_over = False
 
@@ -121,53 +152,45 @@ def juego():
         pygame.display.update()
         reloj.tick(velocidad)
 
-        # Game Over
-        while game_over:
-            pygame.mixer.music.stop()
-            # Todo
-            pantalla.blit(fondo, (0, 0))
-            # Game Over
-            mensaje = pygame.font.SysFont("Gintronic", 70)
-            texto = mensaje.render("GAME OVER", True, colores.rojo)
-            pantalla.blit(texto, (ANCHO / 2 - texto.get_width() / 2, ALTO / 2 - texto.get_height() / 2))
-            # Puntos
-            score = pygame.font.SysFont("Gintronic", 50)
-            puntaje = score.render(f"Puntos: {puntos}", True, colores.negro)
-            # Botones
-            botones = pygame.font.SysFont("Gintronic", 15)
-            boton_q = botones.render("[Q] Cerrar juego", True, colores.negro)
-            # Mostrar
-            pantalla.blit(puntaje, (10, 10))
-            pantalla.blit(boton_q, (ANCHO / 4 + texto.get_width() / 4, ALTO / 4 + texto.get_height() / 4))
-
-            pygame.display.update()
-
-            # Reiniciar o Cerrar
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    game_over = False
-                    running = False
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        game_over = False
-                        running = False
-
-    fin = datetime.datetime.now()
-
-    pygame.quit()
-
     # Guardar puntaje en un SQL
-    conexion = sqlite3.connect("Puntajes.db")
-
-    conexion.execute("insert into Ranking(jugador, inicio, final, puntos) values (?,?,?,?)", (nombre, inicio, fin, puntos))
+    conexion = sqlite3.connect("Puntacion.db")
+    conexion.execute("INSERT INTO Ranking(jugador, puntos) VALUES (?,?)", (nombre, puntos))
     conexion.commit()
 
-    cursor = conexion.execute("select jugador, inicio, final, puntos from Ranking order by puntos desc")
-    for fila in cursor:
-        print(fila)
+    while game_over:
+        pygame.mixer.music.stop()
+        # Todo
+        pantalla.blit(fondo, (0, 0))
+        # Game Over
+        mensaje = pygame.font.SysFont("Gintronic", 70)
+        texto = mensaje.render("GAME OVER", True, colores.rojo)
+        pantalla.blit(texto, (ANCHO / 4, ALTO / 4))
+        # Puntos
+        score = pygame.font.SysFont("Gintronic", 50)
+        puntaje = score.render(f"Puntos: {puntos}", True, colores.negro)
+        # Cerrar Juego
+        botones = pygame.font.SysFont("Gintronic", 15)
+        boton_q = botones.render("[Q] Cerrar Juego", True, colores.negro)
+        # Mostrar
+        pantalla.blit(puntaje, (10, 10))
+        pantalla.blit(boton_q, (ANCHO / 8, ALTO / 8))
+        # SQL
+        mostrar_ranking(conexion)
+
+        pygame.display.update()
+
+        # Reiniciar o Cerrar
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over = False
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    game_over = False
+                    running = False
 
     conexion.close()
 
-    quit()
+    pygame.quit()
 
 juego()

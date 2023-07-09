@@ -5,16 +5,16 @@ Snake_Game
 Es el tipico juego que estaba en los celulares antiguos, solo con unas mejoras un poco mas modernas.
 
 ## Imagen
-![Juego](Imagenes\Juego.png)
+![Juego](Juego.png)
 
-![Serpiente](Imagenes\Cabeza.png)
+![Serpiente](Cuerpo.png)
 
-![Manzana](Imagenes\Cabeza.png)
+![Manzana](Manzanita.png)
 
 ### Requisitos
 Tener instalado Pygame en PYTHON
 
-![pygame](Imagenes\Install.png)
+![pygame](Install.png)
 
 Tener los archivos **colores** y **serpiente** en la misma carpeta que el **Snake_Game**
 
