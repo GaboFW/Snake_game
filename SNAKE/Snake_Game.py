@@ -6,6 +6,8 @@ from serpiente import *
 import pygame.font
 from base_de_datos import *
 
+from resource_path import resource_path
+
 pygame.init()
 pygame.mixer.init()
 
@@ -19,11 +21,11 @@ velocidad = 15
 
 # Sonido
 # Fondo
-sonido_fondo = pygame.mixer.music.load("Musica\\Musica_de_Fondo.mp3")
+sonido_fondo = pygame.mixer.music.load(resource_path("Musica/Musica_de_Fondo.mp3"))
 pygame.mixer.music.play()
 # Dentro del juego
-sonido_comer = pygame.mixer.Sound("Musica\\Comer.mp3")
-sonido_game_over = pygame.mixer.Sound("Musica\\Game_Over.mp3")
+sonido_comer = pygame.mixer.Sound(resource_path("Musica/Comer.mp3"))
+sonido_game_over = pygame.mixer.Sound(resource_path("Musica/Game_Over.mp3"))
 pygame.mixer.music.set_volume(0.1)
 
 # Pantalla
@@ -31,11 +33,11 @@ pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Snake Game")
 
 # Imagen fondo
-fondo = pygame.image.load("Imagenes\\Fondo.png")
+fondo = pygame.image.load(resource_path("Imagenes/Fondo.png"))
 fondo = pygame.transform.scale(fondo, (800, 600))
 
 # Imagen inicio
-pantalla_inicio = pygame.image.load("Imagenes\\Pantalla de inicio.png")
+pantalla_inicio = pygame.image.load(resource_path("Imagenes/Pantalla de inicio.png"))
 pantalla_inicio = pygame.transform.scale(pantalla_inicio, (800, 600))
 
 # Llamar a la clase
@@ -53,7 +55,7 @@ def mostrar_puntaje(puntos):
 # Dibujar la comida
 def manzanita(comida):
     x, y = comida
-    manzanita = pygame.image.load("Imagenes\\Manzanita.png")
+    manzanita = pygame.image.load(resource_path("Imagenes/Manzanita.png"))
     manzanita = pygame.transform.scale(manzanita, (TAMANIO_CABEZA, TAMANIO_CABEZA))
     pantalla.blit(manzanita, (x, y))
 
