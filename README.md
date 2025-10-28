@@ -1,5 +1,5 @@
 # Snake_game
-Snake_Game
+Snake Game
 
 ### Descripcion
 Es el tipico juego que estaba en los celulares antiguos, solo con unas mejoras un poco mas modernas.
